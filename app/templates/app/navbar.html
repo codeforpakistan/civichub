@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand bg-white fixed-top">
+  <div class="container-fluid">
+    
+    <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <a class="navbar-brand" href="{% url 'home' %}">CivicHub</a>
+
+    <form class="d-flex w-25 mx-auto" action="/search" role="search">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+    </form>
+
+    {% comment %} <div class="mode-switch">
+      <button title="Use dark mode" id="dark" class="btn btn-sm btn-default text-secondary">
+          <i class="bi bi-moon-stars-fill"></i>
+      </button>
+      <button title="Use light mode" id="light" class="btn btn-sm btn-default text-secondary">
+          <i class="bi bi-sun-fill"></i>
+      </button>
+      <button title="Use system preferred mode" id="system" class="btn btn-sm btn-default text-secondary">
+          <i class="bi bi-circle-half"></i>
+      </button>
+    </div> {% endcomment %}
+
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'explore' %}">Explore</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'nearby' %}">Nearby</a></li>
+      {% if user.is_authenticated %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+    
+  </div>
+</nav>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">CivicHub</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      {% for hub in hubs %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'hub_detail' hub.slug %}">{{ hub.name }}</a></li>
+      {% endfor %}
+      <hr/>
+      {% if user.is_authenticated %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'admin:login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>

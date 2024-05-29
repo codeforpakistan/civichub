@@ -1,0 +1,30 @@
+{% load humanize %}
+<div class="card mb-3 border-0">
+
+  {% if activity.images.count %}
+  <a href="{% url 'activity_detail' activity.slug %}">
+    <img src="/media/{{ activity.images.first.file.name }}" class="card-img-top rounded" alt="..." />
+  </a>
+  {% endif %}
+  
+  <div class="card-body" style="transform: rotate(0);">
+
+    <h3 class="card-title fs-6 fw-semibold mb-0">
+      <a class="stretched-link text-decoration-none text-dark" href="{% url 'activity_detail' activity.slug %}">{{ activity.name }}</a>
+    </h3>
+
+  </div>
+
+  <div class="card-footer pt-0 border-0 bg-transparent text-body-secondary small">
+    <div>
+      {% if request.path == 'hub_detail' %}
+      <a class="text-decoration-none" href="{% url 'user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
+      {% else %}
+      <a class="text-decoration-none" href="{% url 'hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
+      {% endif%}
+    </div>
+    <div>
+      <span>{{ activity.likes|intcomma|intword }} likes</span> &bull; <span>{{ activity.timesince }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="mt-3">
+  <div class="container">
+    {% load humanize %}
+    <div class="card mb-3 border-0">
+      <div class="card-header border-0 bg-transparent text-secondary">
+        <div class="d-flex flex-row small">
+          <div class="flex-grow-1">
+            {% if link %}
+            <a href="{% url 'hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
+            {% else %}
+            <a href="{% url 'user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
+            {% endif %}
+            &bull; <span>{{ activity.created_at|naturalday }}</span>
+          </div>
+          {% if user.is_staff or user.is_administrator %}
+          <div>
+            <a class="card-link" href="{% url 'admin:app_activity_change' activity.id %}">Edit</a>
+            <a class="card-link" href="{% url 'admin:app_activity_delete' activity.id %}">Delete</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    
+    
+      {% if link %}
+      {% if activity.images.count %}
+      <a href="{% url 'activity_detail' activity.slug %}">
+      <img src="/media/{{ activity.images.first.file.name }}" class="card-img-top rounded" alt="..." />
+      </a>
+      {% endif %}
+      {% else %}
+      {% include "app/activity_gallery.html" with activity=activity %}
+      {% endif %}
+      
+      
+      <div class="card-body" style="transform: rotate(0);">
+    
+    
+        {% if link %}
+        <h3 class="card-title fs-5">
+          <a class="stretched-link " href="{% url 'activity_detail' activity.slug %}">{{ activity.name }}</a>
+        </h3>
+        {% else %}
+        <h1 class="card-title">
+          {{ activity.name }}
+        </h1>
+        {% endif %}
+        
+        
+        {{ activity.body|linebreaks }}
+        
+        
+        
+    
+        {% if not link %}
+        <div>
+          {% for link in activity.links.all %}
+          <a class="card-link" href="{{ link.url }}">{{ link.social }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+    
+    
+      </div>
+      {% if not link %}
+      {% if hubs %}
+    
+      <div class="card-footer pt-0 border-0 bg-transparent text-body-secondary small">
+        
+        
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-primary"><i class="bi bi-arrow-up-circle"></i></button>
+          <button type="button" class="btn btn-primary" disabled><span class="fs5">{{ activity.likes }}</span></button>
+          <button type="button" class="btn btn-primary"><i class="bi bi-arrow-down-circle"></i></button>
+        </div>
+    
+        {% for hub in activity.hubs.all %}
+        <a class="card-link" href="{% url 'hub_detail' hub.slug %}">h/{{ hub.name }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+    
+        <h3>Comments</h3>
+        {% for comment in activity.comments.all %}
+        {% include 'app/comment_card.html' with comment=comment %}
+        {% endfor %}
+
+        <ul class="nav flex-column">
+      {% for link in activity.links.all %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{{ link.url }}">{{ link.social }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,9 +1,24 @@
 import factory
 import factory.fuzzy
+from random import randint
 from app import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.db.models.signals import post_save
 
+
+@factory.django.mute_signals(post_save)
+class ProfileFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Profile
+    
+    user     = factory.SubFactory('app.factories.UserFactory', profile=None)
+    avatar   = factory.django.ImageField(color=factory.Faker('color_rgb'), width=512, height=512)
+    location = factory.Faker("city")
+    birthday = factory.Faker("date_of_birth")
+
+
+@factory.django.mute_signals(post_save)
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -13,68 +28,65 @@ class UserFactory(factory.django.DjangoModelFactory):
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
     password = factory.Faker('user_name')
+    profile = factory.RelatedFactory(ProfileFactory, factory_related_name='user')
 
-class ProfileFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Post
-    
-    location = factory.Faker("city")
 
-class PostFactory(factory.django.DjangoModelFactory):
+class ActivityFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = models.Post
+        model = models.Activity
 
     name = factory.Faker("sentence", nb_words=10)
     slug = factory.LazyAttribute(lambda x: slugify(x.name))
     latitude = factory.Faker("latitude")
     longitude = factory.Faker("longitude")
-    hub = factory.fuzzy.FuzzyChoice(models.Hub.objects.all())
     body = factory.Faker("paragraph")
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
+    likes = randint(-9999,9999)
+    created_at = factory.Faker("date_this_decade")
 
     @factory.post_generation
-    def tags(self, create, extracted, **kwargs):
+    def hubs(self, create, extracted, **kwargs):
         if not create:
             return
         if extracted:
-            self.tags.add(*extracted)
+            self.hubs.add(*extracted)
+
 
 class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Comment
     
     body = factory.Faker("paragraph")
-    post = factory.fuzzy.FuzzyChoice(models.Post.objects.all())
+    activity = factory.fuzzy.FuzzyChoice(models.Activity.objects.all())
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
+    likes = randint(-9999,9999)
+    created_at = factory.Faker("date_this_decade")
+
 
 class LinkFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Link
     
     url = factory.Faker('uri')
-    post = factory.fuzzy.FuzzyChoice(models.Post.objects.all())
+    activity = factory.fuzzy.FuzzyChoice(models.Activity.objects.all())
     social = factory.fuzzy.FuzzyChoice(models.Social.objects.all())
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
 
-class AttachmentFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Attachment
 
-    file = factory.django.FileField(filename='blank_16x9.jpg')
-    post = factory.fuzzy.FuzzyChoice(models.Post.objects.all())
+class ImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Image
+
+    # file = factory.django.FileField(filename='blank_16x9.jpg')
+    file = factory.django.ImageField(color=factory.Faker('color_rgb'), width=1600, height=900)
+    activity = factory.fuzzy.FuzzyChoice(models.Activity.objects.all())
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
+
 
 class HubFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Hub
-
-    name = factory.Faker('uri_page')
-    slug = factory.LazyAttribute(lambda x: slugify(x.name))
-    user = factory.fuzzy.FuzzyChoice(User.objects.all())
-
-class TagFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Tag
+        django_get_or_create = ('name',)
 
     name = factory.Faker('uri_page')
     slug = factory.LazyAttribute(lambda x: slugify(x.name))
