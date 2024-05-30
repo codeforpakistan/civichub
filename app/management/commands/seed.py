@@ -42,7 +42,7 @@ class Command(BaseCommand):
         platforms = ['Facebook','Instagram','Twitter','LinkedIn','TikTok','YouTube','GitHub']
         for p in platforms:
             item = models.Social.objects.create(name=p)
-            self.stdout.write(self.style.SUCCESS('Admin created: "%s"' % item))
+            self.stdout.write(self.style.SUCCESS('Social created: "%s"' % item))
 
     def create_activities(self, num=1):
         for _ in range(num):

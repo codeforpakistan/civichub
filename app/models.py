@@ -51,10 +51,9 @@ class Activity(models.Model):
 
 class Social(models.Model):
     name = models.CharField(max_length=10)
-    icon = models.ImageField()
 
     def __str__(self):
-        return
+        return self.name
 
 
 class Link(models.Model):

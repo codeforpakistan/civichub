@@ -20,35 +20,36 @@
     {{ activity.body|linebreaks }}
         
     <div class="flex-grow-1">
-      {% if link %}
-      <a href="{% url 'app:hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
-      {% else %}
       <a href="{% url 'app:user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
-      {% endif %}
-      &bull; <span>{{ activity.created_at|naturalday }}</span>
+      &bull; 
+      <span>{{ activity.created_at|naturalday }}</span>
     </div>
     {% if user.is_staff or user.is_administrator %}
     <div>
-      <a class="card-link" href="{% url 'admin:app_activity_change' activity.id %}">Edit</a>
-      <a class="card-link" href="{% url 'admin:app_activity_delete' activity.id %}">Delete</a>
+      <a class="" href="{% url 'admin:app_activity_change' activity.id %}">Edit</a>
+      <a class="" href="{% url 'admin:app_activity_delete' activity.id %}">Delete</a>
     </div>
     {% endif %}
         
     <div>
       {% for link in activity.links.all %}
-      <a class="card-link" href="{{ link.url }}">{{ link.social }}</a>
+      <a class="btn rounded-circle" href="{{ link.url }}">
+        <i class="bi bi-{{link.social|lower}}" style="font-size: 1.5rem;"></i>
+      </a>
+      {% endfor %}
+    
+      {% include 'app/partials/like.html' with slug=activity.slug likes=activity.likes %}
+
+      {% for hub in activity.hubs.all %}
+      <a class="" href="{% url 'app:hub_detail' hub.slug %}">h/{{ hub.name }}</a>
       {% endfor %}
     </div>
     
-    {% include 'app/partials/like.html' with slug=activity.slug likes=activity.likes %}
-
-    {% for hub in activity.hubs.all %}
-    <a class="card-link" href="{% url 'app:hub_detail' hub.slug %}">h/{{ hub.name }}</a>
-    {% endfor %}
-    
     {% include 'app/comment/list.html' with comments=activity.comments.all %}
-    {% include 'app/comment/form.html' with activity=activity %}
 
-  </div>
+    {% if user.is_authenticated %}
+    {% include 'app/comment/form.html' with activity=activity %}
+    {% endif %}
+
 </div>
 {% endblock %}

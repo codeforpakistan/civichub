@@ -2,5 +2,7 @@
   <h3 class="fw-light">Comments</h3>
   {% for comment in comments %}
   {% include 'app/comment/detail.html' with comment=comment %}
+  {% empty %}
+  <p>There are no comments!</p>
   {% endfor %}
 </section>
