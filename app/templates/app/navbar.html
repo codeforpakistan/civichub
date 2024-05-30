@@ -5,7 +5,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     
-    <a class="navbar-brand" href="{% url 'home' %}">CivicHub</a>
+    <a class="navbar-brand" href="{% url 'app:home' %}">CivicHub</a>
 
     <form class="d-flex flex-grow-1" action="/search" role="search">
       <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
@@ -24,9 +24,9 @@
     </div> {% endcomment %}
 
     <ul class="navbar-nav">
-      <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'explore' %}">Explore</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'nearby' %}">Nearby</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:home' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:explore' %}">Explore</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:nearby' %}">Nearby</a></li>
       {% if user.is_authenticated %}
       <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
       <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
@@ -46,7 +46,7 @@
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       {% for hub in hubs %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'hub_detail' hub.slug %}">{{ hub.name }}</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:hub_detail' hub.slug %}">{{ hub.name }}</a></li>
       {% endfor %}
       <hr/>
       {% if user.is_authenticated %}

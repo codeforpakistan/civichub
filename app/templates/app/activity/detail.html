@@ -13,7 +13,7 @@
     {% endif %}
     {% endif %}
       
-    <h1 class="fw-light">
+    <h1 class="fw-light my-5">
       {{ activity.name }}
     </h1>
 
@@ -21,9 +21,9 @@
         
     <div class="flex-grow-1">
       {% if link %}
-      <a href="{% url 'hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
+      <a href="{% url 'app:hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
       {% else %}
-      <a href="{% url 'user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
+      <a href="{% url 'app:user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
       {% endif %}
       &bull; <span>{{ activity.created_at|naturalday }}</span>
     </div>
@@ -43,7 +43,7 @@
     {% include 'app/partials/like.html' with slug=activity.slug likes=activity.likes %}
 
     {% for hub in activity.hubs.all %}
-    <a class="card-link" href="{% url 'hub_detail' hub.slug %}">h/{{ hub.name }}</a>
+    <a class="card-link" href="{% url 'app:hub_detail' hub.slug %}">h/{{ hub.name }}</a>
     {% endfor %}
     
     {% include 'app/comment/list.html' with comments=activity.comments.all %}

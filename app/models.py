@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from dateutil.relativedelta import relativedelta
+import datetime
 
 
 class Profile(models.Model):
@@ -47,12 +48,14 @@ class Activity(models.Model):
     def timesince(self):
         return timesince(self)
 
+
 class Social(models.Model):
     name = models.CharField(max_length=10)
     icon = models.ImageField()
 
     def __str__(self):
-        return self.name
+        return
+
 
 class Link(models.Model):
     url = models.URLField()
@@ -65,6 +68,7 @@ class Link(models.Model):
     def __str__(self):
         return self.url
 
+
 class Image(models.Model):
     file = models.FileField()
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='images')
@@ -74,6 +78,7 @@ class Image(models.Model):
 
     def __str__(self):
         return self.file.name
+
 
 class Comment(models.Model):
     body = models.TextField()
@@ -88,6 +93,11 @@ class Comment(models.Model):
 
     def timesince(self):
         return timesince(self)
+    
+    @property
+    def can_edit(self):
+        return self.created_at > timezone.now() - datetime.timedelta(minutes=5)
+
 
 class Hub(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -98,6 +108,7 @@ class Hub(models.Model):
 
     def __str__(self):
         return self.name
+
 
 def timesince(obj):
     d1 = obj.created_at

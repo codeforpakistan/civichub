@@ -1,15 +1,17 @@
 <div class="mb-3">
   <div class="small">
-    <a class="small" href="{% url 'user_detail' comment.user.username %}">u/{{ comment.user.username }}</a> &bull; 
+    <a class="small" href="{% url 'app:user_detail' comment.user.username %}">u/{{ comment.user.username }}</a> &bull; 
     <small title="{{ comment.created_at }}">
-      {{ comment.timesince }} ago
+      {{ comment.timesince }}
     </small>
     {% if comment.user == user %}
+    {% if comment.can_edit %}
     &bull; 
-    <a href="" class="small"
+    <a href="#" class="small"
       hx-delete="/c/{{ comment.id }}/"
       hx-target="#comments"
     >Delete</a>
+    {% endif %}
     {% endif %}
   </div>
   <p class="mb-0">{{ comment.body }}</p>
