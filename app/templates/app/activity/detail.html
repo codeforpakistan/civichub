@@ -1,0 +1,54 @@
+{% extends "app/layout.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="my-5">
+  <div class="container">
+    
+    {% if activity.images.count %}
+    {% if activity.images.count == 1 %}
+    <img src="/media/{{ activity.images.first.file.name }}" class="img-fluid rounded" alt="..." />
+    {% else %}
+    {% include "app/activity/gallery.html" with activity=activity %}
+    {% endif %}
+    {% endif %}
+      
+    <h1 class="fw-light">
+      {{ activity.name }}
+    </h1>
+
+    {{ activity.body|linebreaks }}
+        
+    <div class="flex-grow-1">
+      {% if link %}
+      <a href="{% url 'hub_detail' activity.hubs.first.slug %}">h/{{ activity.hubs.first.name }}</a> 
+      {% else %}
+      <a href="{% url 'user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
+      {% endif %}
+      &bull; <span>{{ activity.created_at|naturalday }}</span>
+    </div>
+    {% if user.is_staff or user.is_administrator %}
+    <div>
+      <a class="card-link" href="{% url 'admin:app_activity_change' activity.id %}">Edit</a>
+      <a class="card-link" href="{% url 'admin:app_activity_delete' activity.id %}">Delete</a>
+    </div>
+    {% endif %}
+        
+    <div>
+      {% for link in activity.links.all %}
+      <a class="card-link" href="{{ link.url }}">{{ link.social }}</a>
+      {% endfor %}
+    </div>
+    
+    {% include 'app/partials/like.html' with slug=activity.slug likes=activity.likes %}
+
+    {% for hub in activity.hubs.all %}
+    <a class="card-link" href="{% url 'hub_detail' hub.slug %}">h/{{ hub.name }}</a>
+    {% endfor %}
+    
+    {% include 'app/comment/list.html' with comments=activity.comments.all %}
+    {% include 'app/comment/form.html' with activity=activity %}
+
+  </div>
+</div>
+{% endblock %}

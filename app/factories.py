@@ -1,10 +1,14 @@
 import factory
 import factory.fuzzy
-from random import randint
+import random 
 from app import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models.signals import post_save
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
+import pytz
 
 
 @factory.django.mute_signals(post_save)
@@ -41,8 +45,8 @@ class ActivityFactory(factory.django.DjangoModelFactory):
     longitude = factory.Faker("longitude")
     body = factory.Faker("paragraph")
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
-    likes = randint(-9999,9999)
-    created_at = factory.Faker("date_this_decade")
+    likes = factory.fuzzy.FuzzyInteger(0, 9999)
+    created_at = factory.fuzzy.FuzzyDateTime(datetime.now(tz=pytz.timezone(settings.TIME_ZONE)) + relativedelta(years=-10))
 
     @factory.post_generation
     def hubs(self, create, extracted, **kwargs):
@@ -59,8 +63,8 @@ class CommentFactory(factory.django.DjangoModelFactory):
     body = factory.Faker("paragraph")
     activity = factory.fuzzy.FuzzyChoice(models.Activity.objects.all())
     user = factory.fuzzy.FuzzyChoice(User.objects.all())
-    likes = randint(-9999,9999)
-    created_at = factory.Faker("date_this_decade")
+    likes = factory.fuzzy.FuzzyInteger(0, 9999)
+    created_at = factory.fuzzy.FuzzyDateTime(datetime.now(tz=pytz.timezone(settings.TIME_ZONE)) + relativedelta(years=-10))
 
 
 class LinkFactory(factory.django.DjangoModelFactory):

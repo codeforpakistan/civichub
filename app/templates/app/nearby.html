@@ -1,15 +1,12 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
-<div class="mt-5 flex-grow-1">
+<div class="my-5 flex-grow-1">
   <div class="container">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-4 g-3">
-      {% for activity in activities %}
-      <div class="col">
-      {% include 'app/activity_card.html' with activity=activity link=True %}
-      </div>
-      {% endfor %}
-    </div>
+    <h1 class="fw-light mb-5">
+      NEARBY
+    </h1>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d13271.759809459092!2d73.07594429486035!3d33.73636883361621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sRestaurants!5e0!3m2!1sen!2s!4v1717054893446!5m2!1sen!2s" width="1116" height="600" class="object-fit-xxl-contain" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </div>
 {% endblock %}

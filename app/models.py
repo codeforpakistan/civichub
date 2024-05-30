@@ -27,13 +27,13 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Activity(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     body = models.TextField()
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     hubs = models.ManyToManyField("Hub", blank=True)
     user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
-    likes = models.IntegerField()
+    likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 
@@ -45,16 +45,7 @@ class Activity(models.Model):
         return self.name
     
     def timesince(self):
-        d1 = self.created_at
-        d2 = timezone.now()
-        delta = relativedelta(d1, d2)
-
-        for comp in ['year', 'month', 'day', 'hour', 'minute', 'second', 'microsecond']:
-            attr = getattr(delta, f'{comp}s')
-            if attr is not 0:
-                return f'{abs(attr)} {comp}{"s"[:abs(attr)^1]} ago'
-        
-        return delta
+        return timesince(self)
 
 class Social(models.Model):
     name = models.CharField(max_length=10)
@@ -86,7 +77,7 @@ class Image(models.Model):
 
 class Comment(models.Model):
     body = models.TextField()
-    likes = models.IntegerField()
+    likes = models.IntegerField(default=0)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     created_at = models.DateTimeField(default=timezone.now)
@@ -95,12 +86,28 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.user.get_full_name()} posted in {self.activity.name}'
 
+    def timesince(self):
+        return timesince(self)
+
 class Hub(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
+
+def timesince(obj):
+    d1 = obj.created_at
+    d2 = timezone.now()
+    delta = relativedelta(d1, d2)
+
+    for comp in ['year', 'month', 'day', 'hour', 'minute', 'second', 'microsecond']:
+        attr = getattr(delta, f'{comp}s')
+        if attr is not 0:
+            return f'{abs(attr)} {comp}{"s"[:abs(attr)^1]} ago'
+    
+    return delta
+    
