@@ -14,7 +14,7 @@ class Command(BaseCommand):
         self.create_admin()
         self.create_users(10)
         self.create_socials()
-        self.create_hubs(20)
+        self.create_hubs(50)
         self.create_activities(50)
         self.create_links(100)
         self.create_comments(200)

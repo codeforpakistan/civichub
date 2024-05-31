@@ -92,6 +92,6 @@ class HubFactory(factory.django.DjangoModelFactory):
         model = models.Hub
         django_get_or_create = ('name',)
 
-    name = factory.Faker('uri_page')
+    name = factory.Faker('street_suffix')
     slug = factory.LazyAttribute(lambda x: slugify(x.name))
     user = factory.fuzzy.FuzzyChoice(User.objects.all())

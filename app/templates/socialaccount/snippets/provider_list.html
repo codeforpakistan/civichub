@@ -1,0 +1,13 @@
+{% load allauth socialaccount %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+  <div class="d-grid gap-2 d-md-flex mb-5">
+    {% for provider in socialaccount_providers %}
+      {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+      <a class="btn btn-outline-dark  w-100" href="{{ href }}">
+        <i class="bi bi-{{provider.name|lower}} me-3"></i>
+        {{ provider.name }}
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}

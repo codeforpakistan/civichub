@@ -1,0 +1,35 @@
+{% extends "app/layout/base.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+{% block page %}
+<article class="container h-100">
+  <div class="row align-items-center justify-content-center h-100">
+    <div class="col-sm-11 col-md-8 col-lg-6 col-xl-4">
+      <div class="card card-body textbg-light border-0">
+        <h1 class="card-title fw-light mb-4">Sign In</h1>
+        {% if not SOCIALACCOUNT_ONLY %}
+        
+        {% url 'account_login' as login_url %}
+        <form method="post" action="login_url">
+          {% csrf_token %}
+          <p>
+            <input class="form-control" type="text" name="login" placeholder="Username" autocomplete="username" maxlength="150" required id="id_login">
+          </p>
+          <p>
+            <input class="form-control" type="password" name="password" placeholder="Password" autocomplete="current-password" required="" id="id_password">
+          </p>
+          <p><button class="btn btn-primary w-100" type="submit">Sign In</button></p>
+          {% endif %}
+          {% if SOCIALACCOUNT_ENABLED %}
+          {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+          {% endif %}
+        <p class="text-center"><a href="/accounts/password/reset/">Forgot your password?</a></p>
+        <p class="text-center mb-0">Don't have an account yet? <a href="{{ signup_url }}">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</article>
+{% endblock page %}

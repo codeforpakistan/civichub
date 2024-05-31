@@ -1,18 +1,18 @@
-{% extends "app/layout.html" %}
-
+{% extends "app/layout/page.html" %}
+{% block head_title %}
+Welcome
+{% endblock head_title %}
 {% block content %}
-<div class="my-5 flex-grow-1">
-  <div class="container">
-    <h1 class="fw-light mb-5">
-      WELCOME
-    </h1>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
-      {% for activity in activities %}
-      <div class="col">
-      {% include 'app/activity/card.html' with activity=activity link=True %}
-      </div>
-      {% endfor %}
+<article>
+  <h1 class="fw-light mb-5">
+    WELCOME
+  </h1>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 rowcols-xxl-4 g-3">
+    {% for activity in activities %}
+    <div class="col">
+    {% include 'app/activity/card.html' with activity=activity link=True %}
     </div>
+    {% endfor %}
   </div>
-</div>
-{% endblock %}
+</article>
+{% endblock content %}

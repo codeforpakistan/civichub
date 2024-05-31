@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand bg-white fixed-top">
   <div class="container-fluid">
     
-    <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    <button class="btn" type="button" data-bs-toggle="offanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
       <span class="navbar-toggler-icon"></span>
     </button>
     
@@ -28,10 +28,21 @@
       <li class="nav-item"><a class="nav-link" href="{% url 'app:explore' %}">Explore</a></li>
       <li class="nav-item"><a class="nav-link" href="{% url 'app:nearby' %}">Nearby</a></li>
       {% if user.is_authenticated %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ user.username }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-person me-3"></i>Profile</a></li>
+          {% if user.is_staff or user.is_superuser %}
+          <li><a class="dropdown-item" href="{% url 'admin:index' %}">Manage</a></li>
+          <li><hr class="dropdown-divider"></li>
+          {% endif %}
+          <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-3"></i>Sign out</a></li>
+        </ul>
+      </li>
       {% else %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:login' %}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
       {% endif %}
     </ul>
     
@@ -53,7 +64,7 @@
       <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
       <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
       {% else %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:login' %}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
       {% endif %}
     </ul>
   </div>
