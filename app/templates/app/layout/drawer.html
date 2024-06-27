@@ -1,17 +1,20 @@
-<div class="offcanvas offcanvas-start show mt-5 border-0" style="width:200px;" tabindex="-1" id="offcanvasExample"  data-bs-scroll="true"  data-bs-backdrop="false" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">CivicHub</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
   <div class="offcanvas-body">
-
-    <ul class="nav flex-column nav-pills">
-      {% for hub in hubs %}
-      <li class="nav-item">
-        {% if hub.slug in request.path %}
-        <a class="nav-link active" href="{% url 'app:hub_detail' hub.slug %}">{{ hub.name }}</a> 
-        {% else %}
-        <a class="nav-link" href="{% url 'app:hub_detail' hub.slug %}">{{ hub.name }}</a> 
-        {% endif %}
-      </li>
-      {% endfor %}
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item"><a class="nav-link {% if '/' == request.path %} active {% endif %}" href="{% url 'app:home' %}"><i class="bi bi-house-door me-3" style="font-size: 1.25rem;"></i>Home</a></li>
+      <li class="nav-item"><a class="nav-link {% if 'explore' in request.path %} active {% endif %}" href="{% url 'app:explore' %}"><i class="bi bi-compass me-3" style="font-size: 1.25rem;"></i>Explore</a></li>
+      <li class="nav-item"><a class="nav-link{% if 'nearby' in request.path %} active {% endif %}" href="{% url 'app:nearby' %}"><i class="bi bi-geo-alt me-3" style="font-size: 1.25rem;"></i>Nearby</a></li>
+      
+      {% if user.is_authenticated %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-person me-3" style="font-size: 1.25rem;"></i>Profile</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-trophy me-3" style="font-size: 1.25rem;"></i>Achievements</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}"><i class="bi bi-box-arrow-in-right me-3" style="font-size: 1.25rem;"></i>Login</a></li>
+      {% endif %}
     </ul>
-    
   </div>
 </div>

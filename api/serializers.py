@@ -6,7 +6,7 @@ from app import models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'get_full_name']
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,7 +15,23 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['location','birthday']
 
 
+class HubSerializer(serializers.HyperlinkedModelSerializer):
+    # user = UserSerializer(read_only=True)
+    class Meta:
+        model = models.Hub
+        fields = ['name','slug']
+
+
+class ImageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Hub
+        fields = '__all__'
+
+
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):
+    user = UserSerializer()
+    hubs = HubSerializer(many=True)
+    images = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = models.Activity
-        fields = ['name', 'body']
+        fields = ['name', 'slug', 'body', 'user', 'hubs', 'images']

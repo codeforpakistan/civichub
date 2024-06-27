@@ -4,12 +4,31 @@
 Nearby
 {% endblock head_title %}
 
+{% block styles %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+{% endblock styles %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    var map = L.map('map').setView([51.505, -0.09], 13);
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiYmxhY2ttb3JlMCIsImEiOiJjaXlub251ZjIwMDJmMnBxems2bmpiYXA2In0.2Hxl5QoDhIY6OR4p3GsU2w'
+  }).addTo(map);
+});
+</script>
+{% endblock scripts %}
+
 {% block content %}
-<article>
-  <h1 class="fw-light mb-5">
+<article class="container">
+  {% comment %} <h1 class="fw-light mb-5">
     NEARBY
-  </h1>
+  </h1> {% endcomment %}
   <div class="ratio ratio-16x9">
+    {% comment %} <div id="map" class="h-100"></div> {% endcomment %}
     <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d13271.759809459092!2d73.07594429486035!3d33.73636883361621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sRestaurants!5e0!3m2!1sen!2s!4v1717054893446!5m2!1sen!2s" width="1600" height="900" class="object-fit-xxl-contain" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </article>

@@ -1,16 +1,14 @@
 {% extends "app/layout/page.html" %}
-
 {% block head_title %}
-Explore
+Activities
 {% endblock head_title %}
-
 {% block content %}
 <article class="container">
   <h1 class="fw-light mb-5">
-    EXPLORE
+    ACTIVITIES
   </h1>
-  {% for hub in hubs %}
-  <a class="link-body-emphasis" href="{% url 'app:hub_detail' hub.slug %}">{{ hub.name }}</a>
-  {% endfor %}
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+    {% include 'app/activity/grid.html' with activities=activities %}
+  </div>
 </article>
 {% endblock content %}

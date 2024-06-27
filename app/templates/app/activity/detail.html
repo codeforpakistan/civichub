@@ -6,7 +6,7 @@
 {% endblock head_title %}
 
 {% block content %}
-<article>
+<article class="container">
     
   {% if activity.images.count %}
   {% if activity.images.count == 1 %}
@@ -22,16 +22,18 @@
 
   {{ activity.body|linebreaks }}
       
-  <div class="flex-grow-1">
-    <a href="{% url 'app:user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
+  <p>
+    <a class="link-body-emphasis" href="{% url 'app:user_detail' activity.user.username %}">u/{{ activity.user.username }}</a> 
     &bull; 
     <span>{{ activity.created_at|naturalday }}</span>
-  </div>
-  {% if user.is_staff or user.is_administrator %}
-  <div>
-    <a class="" href="{% url 'admin:app_activity_change' activity.id %}">Edit</a>
-    <a class="" href="{% url 'admin:app_activity_delete' activity.id %}">Delete</a>
-  </div>
+  </p>
+  {% if user.is_authenticated %}
+  {% if user.is_staff or user.is_administrator or activity.user.username == user.username %}
+  <p>
+    <a class="link-body-emphasis" href="{% url 'app:activity_detail' activity.slug %}">Edit</a>
+    <a class="link-body-emphasis" href="#" hx-delete="{% url 'app:activity_detail' activity.slug %}" hx-confirm="Delete {{activity.name}}?">Delete</a>
+  </p>
+  {% endif %}
   {% endif %}
       
   <div>
@@ -41,10 +43,10 @@
     </a>
     {% endfor %}
   
-    {% include 'app/partials/like.html' with slug=activity.slug likes=activity.likes %}
+    {% include 'app/activity/partials/like.html' with slug=activity.slug likes=activity.likes %}
 
     {% for hub in activity.hubs.all %}
-    <a class="" href="{% url 'app:hub_detail' hub.slug %}">h/{{ hub.name }}</a>
+    <a class="link-body-emphasis" href="{% url 'app:hub_detail' hub.slug %}">h/{{ hub.name }}</a>
     {% endfor %}
   </div>
   

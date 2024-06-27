@@ -33,7 +33,7 @@ class Activity(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     hubs = models.ManyToManyField("Hub", blank=True)
-    user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
+    user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT, related_name='activities')
     likes = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
@@ -69,7 +69,7 @@ class Link(models.Model):
 
 
 class Image(models.Model):
-    file = models.FileField()
+    file = models.ImageField()
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='images')
     user = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     created_at = models.DateTimeField(default=timezone.now)
@@ -116,7 +116,7 @@ def timesince(obj):
 
     for comp in ['year', 'month', 'day', 'hour', 'minute', 'second', 'microsecond']:
         attr = getattr(delta, f'{comp}s')
-        if attr is not 0:
+        if attr != 0:
             return f'{abs(attr)} {comp}{"s"[:abs(attr)^1]} ago'
     
     return delta

@@ -3,9 +3,9 @@
 {% load socialaccount %}
 {% get_providers as socialaccount_providers %}
 {% if socialaccount_providers %}
-    {% if not SOCIALACCOUNT_ONLY %}
-    <p class="d-flex align-items-center gap-3 eyebrow">or Sign In with</p>        
-    {% endif %}
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-    {% include "socialaccount/snippets/login_extra.html" %}
+{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+{% include "socialaccount/snippets/login_extra.html" %}
+{% if not SOCIALACCOUNT_ONLY %}
+<p class="d-flex align-items-center gap-3 eyebrow my-3">or</p>        
+{% endif %}
 {% endif %}

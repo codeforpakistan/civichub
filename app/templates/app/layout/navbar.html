@@ -1,14 +1,24 @@
-<nav class="navbar navbar-expand bg-white fixed-top">
-  <div class="container-fluid">
+<div class="top"></div>
+<nav class="navbar navbar-expand-lg bg-white fixedtop" data-bs-theme="light">
+  <div class="container">
     
-    <button class="btn" type="button" data-bs-toggle="offanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
       <span class="navbar-toggler-icon"></span>
     </button>
     
-    <a class="navbar-brand" href="{% url 'app:home' %}">CivicHub</a>
+    <a class="navbar-brand" href="{% url 'app:home' %}">Civic Hub</a>
 
-    <form class="d-flex flex-grow-1" action="/search" role="search">
-      <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+    <form class="flex-grow-1 ms-3 me-2 mx-lg-5" action="/search" role="search">
+      <div class="input-group">
+        <input class="form-control" type="search" name="q" placeholder="Search" aria-label="Search">
+        {% if user.is_authenticated %}
+        <a class="btn btn-secondary" href="{% url 'app:submit' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+          </svg>
+        </a>
+        {% endif %}
+      </div>
     </form>
 
     {% comment %} <div class="mode-switch">
@@ -23,49 +33,40 @@
       </button>
     </div> {% endcomment %}
 
-    <ul class="navbar-nav">
-      <li class="nav-item"><a class="nav-link" href="{% url 'app:home' %}">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'app:explore' %}">Explore</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'app:nearby' %}">Nearby</a></li>
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          {{ user.username }}
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-person me-3"></i>Profile</a></li>
-          {% if user.is_staff or user.is_superuser %}
-          <li><a class="dropdown-item" href="{% url 'admin:index' %}">Manage</a></li>
-          <li><hr class="dropdown-divider"></li>
-          {% endif %}
-          <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-3"></i>Sign out</a></li>
-        </ul>
-      </li>
-      {% else %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
-      {% endif %}
-    </ul>
+    
+
+    <div class="collapse navbar-collapse flex-grow-0">
+      <ul class="navbar-nav nav-underline ms-5">
+        <li class="nav-item"><a class="nav-link {% if '/' == request.path %} active {% endif %}" href="{% url 'app:home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'explore' in request.path %} active{% endif %}" href="{% url 'app:explore' %}">Explore</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'nearby' in request.path %} active {% endif %}" href="{% url 'app:nearby' %}">Nearby</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.get_full_name }}">
+            {% if user.socialaccount_set.all.0.get_avatar_url %}
+            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded-circle" height="28" />
+            {% else %}
+            <i class="bi bi-person-circle" style="font-size:1.25rem;"></i>
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'profile' %} active {% endif %}" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-person me-3"></i>Profile</a></li>
+            <li><a class="dropdown-item {% if request.resolver_match.url_name == 'achievements' %} active {% endif %}" href="{% url 'app:user_detail' user.username %}"><i class="bi bi-trophy me-3"></i>Achievements</a></li>
+            <li><hr class="dropdown-divider"></li>
+            {% if user.is_staff or user.is_superuser %}
+            <li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="bi bi-gear me-3"></i>Manage</a></li>
+            <li><hr class="dropdown-divider"></li>
+            {% endif %}
+            <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-3"></i>Sign out</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
     
   </div>
 </nav>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">CivicHub</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      {% for hub in hubs %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'app:hub_detail' hub.slug %}">{{ hub.name }}</a></li>
-      {% endfor %}
-      <hr/>
-      {% if user.is_authenticated %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Manage</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'admin:logout' %}">Logout</a></li>
-      {% else %}
-      <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
-      {% endif %}
-    </ul>
-  </div>
-</div>
+{% include 'app/layout/drawer.html' %}
