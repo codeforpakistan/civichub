@@ -1,0 +1,20 @@
+ 
+.eyebrow::after,
+.eyebrow::before {
+  border-block-end: thin solid #dee2e6;
+  content: "";
+  flex-grow: 1;
+  min-width: 1px;
+}
+
+.offcanvas .bi::before, 
+.offcanvas [class*=" bi-"]::before, 
+.offcanvas [class^="bi-"]::before {
+  vertical-align: -4px;
+}
+
+.nav-underline .nav-link.active, 
+.nav-underline .show > .nav-link {
+  font-weight: 400 !important;
+}
+
