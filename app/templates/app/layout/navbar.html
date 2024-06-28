@@ -57,7 +57,13 @@
             <li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="bi bi-gear me-3"></i>Manage</a></li>
             <li><hr class="dropdown-divider"></li>
             {% endif %}
-            <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-3"></i>Sign out</a></li>
+            
+            <li>
+              <form method="post" action="{% url 'account_logout' %}" class="d-inline">
+                {% csrf_token %}
+                <a class="dropdown-item" href="#" onclick="this.closest('form').submit();return false;"><i class="bi bi-box-arrow-right me-3"></i>Sign out</a>
+              </form>
+            </li>
           </ul>
         </li>
         {% else %}

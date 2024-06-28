@@ -3,11 +3,14 @@
 {% if socialaccount_providers %}
   <div class="d-grid gap-2 d-md-flex">
     {% for provider in socialaccount_providers %}
-      {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
-      <a class="btn btn-outline-dark  w-100" href="{{ href }}">
+    {% provider_login_url provider process=process scope=scope auth_params=auth_params as action %}
+    <form method="post" action="{{ action }}" class="d-inline-block w-100">
+      {% csrf_token %}
+      <button class="btn btn-outline-dark w-100" type="submit">
         <i class="bi bi-{{provider.name|lower}} me-3"></i>
         {{ provider.name }}
-      </a>
+      </button> 
+    </form>
     {% endfor %}
   </div>
 {% endif %}
