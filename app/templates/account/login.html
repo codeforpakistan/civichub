@@ -1,6 +1,5 @@
 {% extends "app/layout/base.html" %}
-{% load i18n %}
-{% load allauth account %}
+{% load i18n allauth account %}
 {% block head_title %}
     {% trans "Sign In" %}
 {% endblock head_title %}
@@ -9,16 +8,14 @@
   <div class="row align-items-center justify-content-center h-100">
     <div class="col-sm-11 col-md-8 col-lg-6 col-xl-4">
       <div class="card card-body border-0">
-        <h1 class="card-title fw-light mb4">Welcome back</h1>
-        <p class="card-subtitle mb-4">Sign in to your account</p>
+        <h1 class="card-title fw-light">Welcome back</h1>
+        <p class="card-subtitle mb-4">Log in to your account, or <a href="{{ signup_url }}">Sign Up</a>.</p>
         {% if not SOCIALACCOUNT_ONLY %}
         
         {% if SOCIALACCOUNT_ENABLED %}
         {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
         {% endif %}
         <form method="post" action="{% url 'account_login' %}">
-
-
           {% csrf_token %}
           <p>
             <label class="form-label" for="id_login">Username</label>
@@ -28,12 +25,11 @@
             <label class="form-label" for="id_password">Password</label>
             <input class="form-control" type="password" name="password" placeholder="********" autocomplete="current-password" required id="id_password">
           </p>
-          <p><button class="btn btn-primary w-100" type="submit">Sign In</button></p>
+          <p><button class="btn btn-primary w-100" type="submit">Log In</button></p>
           {% endif %}
           
-        <p class="text-center"><a href="/accounts/password/reset/">Forgot your password?</a></p>
-        <p class="text-center">Don't have an account yet? <a href="{{ signup_url }}">Sign Up</a></p>
-        <p class="text-center small mt3">By continuing, you agree to our <a href="/policies/terms/">Terms of Service</a> and <a href="/policies/privacy">Privacy Policy</a>.</p>
+        <p class="text-center"><a href="{% url 'account_reset_password' %}">Forgot your password?</a></p>
+        <p class="text-center small">By continuing, you agree to our <span class="text-nowrap"><a href="/policies/terms/">Terms of Service</a> and <a href="/policies/privacy">Privacy Policy</a></span>.</p>
       </div>
     </div>
   </div>

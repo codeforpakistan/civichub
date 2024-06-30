@@ -4,35 +4,44 @@
     {% trans "Signup" %}
 {% endblock head_title %}
 {% block page %}
-    {% element h1 %}
-        {% trans "Sign Up" %}
-    {% endelement %}
-    {% setvar link %}
-        <a href="{{ login_url }}">
-        {% endsetvar %}
-        {% setvar end_link %}
-        </a>
-    {% endsetvar %}
-    {% element p %}
-        {% blocktranslate %}Already have an account? Then please {{ link }}sign in{{ end_link }}.{% endblocktranslate %}
-    {% endelement %}
-    {% if not SOCIALACCOUNT_ONLY %}
-        {% url 'account_signup' as action_url %}
-        {% element form form=form method="post" action=action_url tags="entrance,signup" %}
-            {% slot body %}
-                {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
-                {% endelement %}
-                {{ redirect_field }}
-            {% endslot %}
-            {% slot actions %}
-                {% element button tags="prominent,signup" type="submit" %}
-                    {% trans "Sign Up" %}
-                {% endelement %}
-            {% endslot %}
-        {% endelement %}
-    {% endif %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+<article class="container h-100">
+  <div class="row align-items-center justify-content-center h-100">
+    <div class="col-sm-11 col-md-8 col-lg-6 col-xl-4">
+      <div class="card card-body border-0">
+        <h1 class="card-title fw-light">{% trans "Sign Up" %}</h1>
+        <p class="card-subtitle mb-4">
+          Already have an account? <a href="{{ login_url }}">Log in</a> here.
+        </p>
+        {% if SOCIALACCOUNT_ENABLED %}
+          {% include "socialaccount/snippets/login.html" %}
+        {% endif %}
+        {% if not SOCIALACCOUNT_ONLY %}
+        <form method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          <p>
+            <label class="form-label" for="id_login">Username</label>
+            <input class="form-control" type="text" name="username" placeholder="Username" autocomplete="username" maxlength="150" required id="id_login">
+          </p>
+          {% comment %} <p>
+            <label class="form-label" for="id_login">Email (optional)</label>
+            <input class="form-control" type="email" name="email" placeholder="Email address" autocomplete="email" maxlength="320" id="id_email">
+          </p> {% endcomment %}
+          <p>
+            <label class="form-label" for="id_password1">Password</label>
+            <input class="form-control" type="password" name="password1" placeholder="********" required id="id_password1">
+          </p>
+          {% comment %} <p>
+            <label class="form-label" for="id_password2">Password (again)</label>
+            <input class="form-control" type="password" name="password2" placeholder="********" required id="id_password2">
+          </p> {% endcomment %}
+          <input type="hidden" name="password2" vaue="" >
+          <p><button class="btn btn-primary w-100" type="submit">Sign Up</button></p>
+          {% comment %} <p class="text-center"><a href="{% url 'account_reset_password' %}">Forgot your password?</a></p> {% endcomment %}
+          <p class="text-center small">By continuing, you agree to our <span class="text-nowrap"><a href="/policies/terms/">Terms of Service</a> and <a href="/policies/privacy">Privacy Policy</a></span>.</p>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</article>
 {% endblock page %}

@@ -15,21 +15,16 @@ def index(request):
     items = models.Activity.objects.order_by('-created_at').all()
     paginator = Paginator(items, per_page=12)
     page_object = paginator.get_page(page_number)
-    hubs  = models.Hub.objects.all()
 
     return render(request, "app/index.html", context = {
-        "activities": page_object,
-        'hubs': hubs,
+        "activities": page_object
     })
 
 
 def nearby(request):
     items = models.Activity.objects.all()
-    hubs  = models.Hub.objects.all()
-
     return render(request, "app/nearby.html", context = {
         "activities": items,
-        'hubs': hubs,
     })
 
         # items = models.Hub.objects.all()
@@ -53,11 +48,8 @@ class HubDetail(View):
 
     def get(self, request, hub):
         items = models.Activity.objects.filter(hubs__slug=hub).all()
-        hubs  = models.Hub.objects.all()
-
         return render(request, "app/hub/detail.html", context = {
             "activities": items,
-            'hubs': hubs,
         })
 
 
@@ -79,21 +71,14 @@ class ActivityList(View):
         paginator = Paginator(items, per_page=12)
         page_object = paginator.get_page(page_number)
 
-        hubs  = models.Hub.objects.all()
-
         return render(request, "app/activity/list.html", context = {
             "activities": page_object,
-            'hubs': hubs,
         })
     
     def submit(request):
-        hubs  = models.Hub.objects.all()
-        return render(request, "app/activity/form.html", context = {
-            'hubs': hubs,
-        })
+        return render(request, "app/activity/form.html")
         
     def post(self, request): 
-        
         if request.method == 'POST':
             form = forms.ActivityForm(request.POST)
             if form.is_valid():
@@ -115,11 +100,9 @@ class ActivityList(View):
 class ActivityDetail(View):
     def get(self, request, activity):
         item = models.Activity.objects.get(slug=activity)
-        hubs  = models.Hub.objects.all()
 
         return render(request, "app/activity/detail.html", context = {
             "activity": item,
-            'hubs': hubs,
         })
     
     def put(self, request, activity):
@@ -136,19 +119,13 @@ class ActivityDetail(View):
 
 class activity_create(View):
     def get(self, request):
-        hubs  = models.Hub.objects.all()
-        return render(request, "app/activity/form.html", context = {
-            'hubs': hubs,
-        })
+        return render(request, "app/activity/form.html")
 
 
 def user_detail(request, username):
     user = models.User.objects.get(username=username)
-    hubs  = models.Hub.objects.all()
-
     return render(request, "app/user/detail.html", context = {
         "user": user,
-        'hubs': hubs,
     })
 
 def activity_like(request, activity):
@@ -197,3 +174,19 @@ class CommentDetail(View):
         return render(request, 'app/comment/list.html', {
             'comments': activity.comments.all()
         })
+
+
+class PolicyList(ListView):
+    def get(self, request):
+        return render(request, "app/policies/index.html")
+
+
+class PolicyDetail(DetailView):
+    def get(self, request, policy):
+        return render(request, f"app/policies/{policy}.html")
+
+def about(request):
+    return render(request, "app/about.html")
+
+def contact(request):
+    return render(request, "app/contact.html")

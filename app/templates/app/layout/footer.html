@@ -1,7 +1,22 @@
-<nav class="navbar navbar-expand-xl bg-transparent">
-  <div class="container">
+<nav class="navbar navbar-expand bg-transparent">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:about' %}">About</a></li>
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Policies
+        </a>
+        <ul class="dropdown-menu dropdown-menuend">
+          <li><a class="dropdown-item" href="{% url 'app:policy_detail' 'privacy' %}">Privacy policy</a></li>
+          <li><a class="dropdown-item" href="{% url 'app:policy_detail' 'content' %}">Content policy</a></li>
+          <li><a class="dropdown-item" href="{% url 'app:policy_detail' 'terms' %}">Terms of use</a></li>
+          <li><a class="dropdown-item" href="{% url 'app:policy_detail' 'conduct' %}">Code of conduct</a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'app:contact' %}">Contact us</a></li>
+    </ul>
     <span class="navbar-text">
-      Except where otherwise <a href="/policies/">noted</a>, content on this site is licensed <br> under 
+      Except where otherwise <a href="/policies/">noted</a>, content on this site is licensed under
       <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">
         Creative Commons Attribution 4.0 International</a> 
         <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -47,22 +62,6 @@
       </g>
       </svg>
     </span>
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/about">About CivicHub</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/policies/privacy/">Privacy policy</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/policies/content/">Content policy</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/policies/terms/">Terms of Use</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/policies/conduct/">Code of conduct</a>
-      </li>
-    </ul>
+    
   </div>
 </nav>

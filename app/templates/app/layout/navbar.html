@@ -1,6 +1,6 @@
 <div class="top"></div>
-<nav class="navbar navbar-expand-lg bg-white fixedtop" data-bs-theme="light">
-  <div class="container">
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
     
     <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
       <span class="navbar-toggler-icon"></span>
@@ -41,10 +41,10 @@
         <li class="nav-item"><a class="nav-link {% if 'explore' in request.path %} active{% endif %}" href="{% url 'app:explore' %}">Explore</a></li>
         <li class="nav-item"><a class="nav-link {% if 'nearby' in request.path %} active {% endif %}" href="{% url 'app:nearby' %}">Nearby</a></li>
         {% if user.is_authenticated %}
-        <li class="nav-item dropdown ms-3">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.get_full_name }}">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle py-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.get_full_name }}">
             {% if user.socialaccount_set.all.0.get_avatar_url %}
-            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded-circle" height="28" />
+            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded-circle" height="32" />
             {% else %}
             <i class="bi bi-person-circle" style="font-size:1.25rem;"></i>
             {% endif %}
@@ -66,12 +66,12 @@
             </li>
           </ul>
         </li>
-        {% else %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
         {% endif %}
       </ul>
     </div>
-    
+    {% if not user.is_authenticated %}
+      <a class="btn btn-primary ms-3" href="{% url 'account_login' %}">Log in</a>
+    {% endif %}
   </div>
 </nav>
 

@@ -1,4 +1,6 @@
- 
+html, body { min-height: 100vh; }
+html { font-size: 0.875rem; }
+
 .eyebrow::after,
 .eyebrow::before {
   border-block-end: thin solid #dee2e6;

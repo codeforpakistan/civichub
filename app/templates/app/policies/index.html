@@ -1,0 +1,16 @@
+{% extends "app/layout/page.html" %}
+{% load static %}
+{% block head_title %}
+Policies
+{% endblock head_title %}
+{% block content %}
+<article class="container">
+  <h1 class="fw-light mb-5">POLICIES</h1>
+  <ul>
+    <li><a href="{% url 'app:policy_detail' 'content' %}">Content Policy</a></li>
+    <li><a href="{% url 'app:policy_detail' 'privacy' %}">Privacy Policy</a></li>
+    <li><a href="{% url 'app:policy_detail' 'terms' %}">Terms of Use</a></li>
+    <li><a href="{% url 'app:policy_detail' 'conduct' %}">Code of Conduct</a></li>
+  </ul>
+</article>
+{% endblock content %}
