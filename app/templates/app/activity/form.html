@@ -24,58 +24,36 @@ Identify
   <form method="post" action="{% url 'app:activity_list' %}">
     {% csrf_token %}
 
-    <div class="form-floating mb-3">
-      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-        <option selected>Select a hub...</option>
-        {% for hub in hubs %} 
-        <option value="{{ hub.slug}}">{{ hub.name }}</option>
-        {% endfor %}
-      </select>
-      <label for="floatingSelect">Select a hub...</label>
-    </div>
-
+    
     <fieldset>
+      <div class="form-floating mb-3">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option selected>Select a hub...</option>
+          {% for hub in hubs %} 
+          <option value="{{ hub.slug}}">{{ hub.name }}</option>
+          {% endfor %}
+        </select>
+        <label for="floatingSelect">Select a hub...</label>
+      </div>
       <div id="ch_text" x-show="tab == 'text'">
         <div class="form-floating mb-3">
           <input type="text" id="id_name" name="name" class="form-control" required>
-          <label for="id_name">Name of activity</label>
+          <label for="id_name">Title of activity</label>
         </div>
         <div class="form-floating mb-3">
           <textarea id="floatingTextarea" name="body" class="form-control" style="height: 10rem" required></textarea>
           <label for="floatingTextarea">Description</label>
         </div>
-        <div class="row">
-          <div class="col">
-            <div class="form-floating mb-3">
-              <input type="text" id="id_latitude" name="latitude" class="form-control" required>
-              <label for="id_latitude">Latitude</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating mb-3">
-              <input type="text" id="id_longitude" name="longitude" class="form-control" required>
-              <label for="id_longitude">Longitude</label>
-            </div>
-          </div>
-          <div class="col-auto">
-            <button class="btn btn-primary" @click="getLocation()">Locate</button>
-          </div>
-        </div>
       </div>
     </fieldset>
-    <fieldset>
-      <div class="mb-3">
-        <input class="form-control" type="file" id="formFileMultiple" multiple>
-      </div>
-    </fieldset>
-    <fieldset>
-      <div class="mb-3">
-        <label for="id_facebook" class="form-label">Facebook</label>
-        <input type="text" class="form-control" id="id_facebook">
-      </div>
-    </fieldset>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-grid d-flex gap-2 mb-3">
+      <button type="button" class="btn btn-secondary"><i class="bi bi-link-45deg"></i> Links</button>
+      <button type="button" class="btn btn-secondary"><i class="bi bi-image"></i> Images</button>
+      <button type="button" class="btn btn-secondary"><i class="bi bi-camera-video"></i> Videos</button>
+      <button type="button" class="btn btn-secondary"><i class="bi bi-file-pdf"></i> Documents</button>
+      <button type="button" class="btn btn-secondary"><i class="bi bi-geo-alt"></i> Locations</button>
+    </div>
+    <button class="btn btn-primary flex-grow-1">Submit</button>
   </form>
 
 </article>

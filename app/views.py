@@ -76,7 +76,10 @@ class ActivityList(View):
         })
     
     def submit(request):
-        return render(request, "app/activity/form.html")
+        hubs  = models.Hub.objects.all()
+        return render(request, "app/activity/form.html", {
+            'hubs': hubs
+        })
         
     def post(self, request): 
         if request.method == 'POST':

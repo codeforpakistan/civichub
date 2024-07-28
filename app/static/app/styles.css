@@ -1,5 +1,11 @@
 html, body { min-height: 100vh; }
-html { font-size: 0.875rem; }
+/* html { font-size: 0.875rem; } */
+
+@media (min-width: 1920px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-2xl {
+    max-width: 1680px;
+  }
+}
 
 .eyebrow::after,
 .eyebrow::before {
