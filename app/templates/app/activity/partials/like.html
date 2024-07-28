@@ -1,7 +1,0 @@
-{% load humanize %}
-<button type="button" class="btn rounded-circle" 
-  hx-post="/a/{{activity.slug}}/like/"
-  hx-swap="outerHTML"
-  title="{{activity.likes|intcomma}} likes">
-  <i class="bi bi-heart" style="font-size: 1.5rem;"></i>
-</button>
