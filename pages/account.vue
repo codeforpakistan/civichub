@@ -24,7 +24,8 @@ const logout = async () => {
         <UFormGroup label="Phone">
           <UInput v-model="user.phone" disabled size="xl" />
         </UFormGroup>
-        <UButton @click="logout" color="white" icon="i-mdi:logout" size="xl">Logout</UButton>
+        <p>{{ user.id }}</p>
+        <UButton @click="logout" color="white" icon="i-ic:baseline-logout" size="xl">Logout</UButton>
       </div>
     </div>
   </main>

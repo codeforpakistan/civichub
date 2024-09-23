@@ -15,17 +15,17 @@ const refreshAll = async () => {
 </script>
 
 <template>
-  <nav class="flex py-2 md:py-4">
-    <Drawer class="block md:hidden" />
+  <nav class="flex p-2 md:p-4">
+    <Drawer />
     <SiteTitle class="p-1" />
     <span class="grow"></span>
-    <UHorizontalNavigation :links="links" class="hidden md:flex" :ui="{ container: 'flex justify-center items-center w-full gap-4' }" />
+    <UHorizontalNavigation :links="links" class="hidden md:flex" :ui="{ container: 'flex justify-center items-center w-full gap-2' }" />
     <div class="flex justify-end items-center">
-      
-      <UButton to="/activities/create" icon="i-mdi:plus" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
-      <UButton icon="i-mdi:magnify" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
-      <UButton v-if="user" to="/account" icon="i-mdi:account-outline" variant="ghost" color="gray" size="xl" :ui="{ rounded: 'rounded-full' }" />
-      <UButton @click="refreshAll" icon="i-mdi:refresh" variant="ghost" color="gray" size="xl" :ui="{ rounded: 'rounded-full' }" />
+      <UButton v-if="user" to="/activities/create" icon="i-ic:outline-plus" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
+      <UButton v-else to="/login" icon="i-ic:baseline-login" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
+      <UButton icon="i-ic:outline-search" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
+      <UButton v-if="user" to="/account" icon="i-ic:outline-person" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
+      <UButton @click="refreshAll" icon="i-ic:outline-refresh" color="gray" variant="ghost" size="xl" :ui="{ rounded: 'rounded-full' }" />
       <ThemeToggle />
     </div>
   </nav>

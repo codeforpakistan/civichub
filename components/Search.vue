@@ -1,6 +1,6 @@
 <template>
   <UButton
-    icon="i-mdi:magnify"
+    icon="i-ic:baseline-search"
     color="gray"
     variant="ghost"
   />

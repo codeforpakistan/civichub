@@ -5,7 +5,7 @@ const user = useSupabaseUser()
 const route = useRoute()
 
 const { data: activity } = await useAsyncData('activity', async () => {
-  const { data } = await client.from('activities').select('id,slug,name,body,author').eq('slug',route.params.slug).single()
+  const { data } = await client.from('activities').select('id,slug,name').eq('slug',route.params.slug).single()
   return data
 })
 
