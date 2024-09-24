@@ -8,12 +8,10 @@ const { data: activities } = await useAsyncData('activities', async () => {
 })
 </script>
 <template>
-  <main>
-    <h1 class="text-2xl mb-4">Welcome</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div v-for="(activity, a) in activities" :key="a">
-        <ActivityCard :activity="activity" />
-      </div>
+  <h1 class="text-2xl mb-4">Welcome</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div v-for="(activity, a) in activities" :key="a">
+      <ActivityCard :activity="activity" />
     </div>
-  </main>
+  </div>
 </template>
